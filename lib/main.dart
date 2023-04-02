@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
       title: 'BOTbot',
       theme: ThemeData(brightness: Brightness.dark),
       home: ChatScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

@@ -10,9 +10,7 @@ import '../models/all_models_model.dart';
 import '../models/chat_model.dart';
 
 class ApiServices {
-   
-   
-   static Future<List<ModelsModel>> getModels() async {
+  static Future<List<ModelsModel>> getModels() async {
     try {
       var response = await http.get(
         Uri.parse("$BASE_URL/models"),
@@ -20,6 +18,7 @@ class ApiServices {
       );
 
       Map jsonResponse = jsonDecode(response.body);
+      log("$jsonResponse");
 
       if (jsonResponse['error'] != null) {
         // print("jsonResponse['error'] ${jsonResponse['error']["message"]}");
@@ -85,7 +84,6 @@ class ApiServices {
       rethrow;
     }
   }
-
 
   // Send Message fct
   static Future<List<ChatModel>> sendMessage(
