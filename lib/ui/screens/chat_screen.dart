@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_chatbot/core/api/api_services.dart';
 import 'package:flutter_chatbot/core/repositories/user_repository.dart';
 import 'package:flutter_chatbot/ui/constant/textstyle.dart';
 import 'package:flutter_chatbot/ui/screens/response_screen.dart';
@@ -29,6 +30,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     _listScrollController = ScrollController();
     textEditingController = TextEditingController();
+    ApiServices.getModels();
     focusNode = FocusNode();
     super.initState();
   }
