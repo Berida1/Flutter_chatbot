@@ -3,14 +3,14 @@ class apiRoute {
   static const local = "http://localhost:8000";
 
 
-  static const base = "$local/customer";
+  // static const base = "/api";
 
   //customer
-  static const signUp = "$base/register";
-  static const login = "$base/login-user";
-
-  static const addChat = "$base/create-cha";
-  static const fetchChat = "$base/fetch-user-chat";
+  static const signUp = "$local/api/register";
+  static const login = "$local/api/login";
+  static const userProfile = "$local/api/fetch-user-profile";
 
 
+  static const addChat = "$local/api/create-chat";
+  static const fetchChat = "$local/api/fetch-user-chat";
 }

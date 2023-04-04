@@ -1,6 +1,7 @@
 import 'package:dialog_flowtter/dialog_flowtter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chatbot/ui/screens/chat_screen.dart';
+import 'package:flutter_chatbot/ui/screens/login_screen.dart';
 import 'package:get/route_manager.dart';
 import 'package:provider/provider.dart';
 
@@ -19,8 +20,7 @@ class MyApp extends StatelessWidget {
     debugShowCheckedModeBanner: false,
       title: 'BOTbot',
       theme: ThemeData(brightness: Brightness.light),
-      home: ChatScreen(),
-      debugShowCheckedModeBanner: false,
+      home: LoginScreen(),
     );
   }
 }

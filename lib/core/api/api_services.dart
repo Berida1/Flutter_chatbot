@@ -38,8 +38,10 @@ class ApiServices {
   }
 
   // Send Message using ChatGPT API
-  static Future<List<ChatModel>> sendMessageGPT(
+  static Future<String> sendMessageGPT(
       {required String message, required String modelId}) async {
+      log("in sending message");
+
     try {
       log("modelId $modelId");
       var response = await http.post(
@@ -61,24 +63,28 @@ class ApiServices {
         ),
       );
 
+
+
       Map jsonResponse = jsonDecode(response.body);
+      log("$jsonResponse");
+
 
       if (jsonResponse['error'] != null) {
         // print("jsonResponse['error'] ${jsonResponse['error']["message"]}");
         throw HttpException(jsonResponse['error']["message"]);
       }
-      List<ChatModel> chatList = [];
-      if (jsonResponse["choices"].length > 0) {
-        // log("jsonResponse[choices]text ${jsonResponse["choices"][0]["text"]}");
-        chatList = List.generate(
-          jsonResponse["choices"].length,
-          (index) => ChatModel(
-            msg: jsonResponse["choices"][index]["message"]["content"],
-            chatIndex: 1,
-          ),
-        );
-      }
-      return chatList;
+      // List<ChatModel> chatList = [];
+      // if (jsonResponse["choices"].length > 0) {
+      //   // log("jsonResponse[choices]text ${jsonResponse["choices"][0]["text"]}");
+      //   chatList = List.generate(
+      //     jsonResponse["choices"].length,
+      //     (index) => ChatModel(
+      //       msg: jsonResponse["choices"][index]["message"]["content"],
+      //       chatIndex: 1,
+      //     ),
+      //   );
+      // }
+      return jsonResponse["choices"][0]["message"]["content"];
     } catch (error) {
       log("error $error");
       rethrow;

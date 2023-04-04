@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_chatbot/ui/constant/textstyle.dart';
+import 'package:flutter_chatbot/ui/responsiveState/responsive_state.dart';
 import 'package:flutter_chatbot/widget/customer_appbar.dart';
+import 'package:provider/provider.dart';
+
+import '../../core/repositories/user_repository.dart';
 
 class ResponseScreen extends StatefulWidget {
   final String question;
@@ -15,6 +19,8 @@ class ResponseScreen extends StatefulWidget {
 class _ResponseScreenState extends State<ResponseScreen> {
   @override
   Widget build(BuildContext context) {
+    final userProv = Provider.of<UserRepository>(context);
+
     return Scaffold(
       appBar: CustomAppBar(
         title: "Response",
@@ -60,10 +66,17 @@ class _ResponseScreenState extends State<ResponseScreen> {
             SizedBox(
               height: 10,
             ),
-            Text(
-              "Some random text as place holderSome random text as place holderSome random text as place holderSome random text as place holderSome random text as place holderSome random text as place holder",
-              style: txStyle12,
-            )
+            ResponsiveState(
+                state: userProv.state,
+                busyWidget: Center(
+                    child: Text(
+                  "Loading the best solution. be patient",
+                  style: txStyle14.copyWith(color: Colors.grey),
+                )),
+                idleWidget: Text(
+                  userProv.content,
+                  style: txStyle12,
+                ))
           ],
         ),
       ),
