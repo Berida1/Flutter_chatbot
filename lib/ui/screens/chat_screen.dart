@@ -60,6 +60,9 @@ class _ChatScreenState extends State<ChatScreen> {
               },
               child: ListView(
                 children: [
+                  SizedBox(
+                    height: 20,
+                  ),
                   Row(
                     children: [
                       Container(
@@ -122,14 +125,21 @@ class _ChatScreenState extends State<ChatScreen> {
                   Center(
                     child: InkWell(
                       onTap: () {
+                        final userProv =
+                            Provider.of<UserRepository>(context, listen: false);
+                        Get.to(ResponseScreen(
+                          question: textEditingController.text,
+                        ));
+
                         userProv.sendMessageAndGetAnswers(
                             msg: textEditingController.text,
                             chosenModelId: userProv.getCurrentModel);
 
-                        Get.to(ResponseScreen(
-                          question: textEditingController.text,
-                        ));
-                        userProv.fetchChat();
+                        setState(() {
+                          textEditingController.clear();
+                        });
+
+                        // userProv.fetchChat();
                       },
                       child: Container(
                         height: 40,
@@ -169,34 +179,34 @@ class _ChatScreenState extends State<ChatScreen> {
                   //         ),
                   //       )
                   //     :
-                  MediaQuery.removePadding(
-                    context: context,
-                    removeTop: true,
-                    removeBottom: true,
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: userProv.chatHistoryModel.data?.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title: SizedBox(
-                              width: double.infinity,
-                              child: Text(
-                                "${userProv.chatHistoryModel.data?.elementAt(index).question}",
-                                overflow: TextOverflow.ellipsis,
-                                style: txStyle14,
-                              ),
-                            ),
-                            subtitle: SizedBox(
-                              width: double.infinity,
-                              child: Text(
-                                "${userProv.chatHistoryModel.data?.elementAt(index).answer}",
-                                style: txStyle12.copyWith(color: Colors.grey),
-                              ),
-                            ),
-                          );
-                        }),
-                  )
+                  // MediaQuery.removePadding(
+                  //   context: context,
+                  //   removeTop: true,
+                  //   removeBottom: true,
+                  //   child: ListView.builder(
+                  //       shrinkWrap: true,
+                  //       itemCount: userProv.chatHistoryModel.data?.length,
+                  //       itemBuilder: (context, index) {
+                  //         return Column(
+                  //           mainAxisSize: MainAxisSize.min,
+                  //           crossAxisAlignment: CrossAxisAlignment.start,
+                  //           children: [
+                  //             Text(
+                  //               "${userProv.chatHistoryModel.data?.elementAt(index).question}",
+                  //               overflow: TextOverflow.ellipsis,
+                  //               style: txStyle14,
+                  //             ),
+                  //             // SizedBox(
+                  //             //   height: 10,
+                  //             // ),
+                  //             Text(
+                  //               "${userProv.chatHistoryModel.data?.elementAt(index).answer}",
+                  //               style: txStyle12.copyWith(color: Colors.grey),
+                  //             ),
+                  //           ],
+                  //         );
+                  //       }),
+                  // )
                 ],
               ),
             ),

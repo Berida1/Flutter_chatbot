@@ -42,7 +42,6 @@ class UserRepository extends BaseNotifier {
   UserProfileModel userProfileModel = UserProfileModel();
   ChatHistoryModel chatHistoryModel = ChatHistoryModel();
 
-
   // List<ChatModel> chatList = [];
   String currentModel = "gpt-3.5-turbo-0301";
   String content = "";
@@ -77,9 +76,8 @@ class UserRepository extends BaseNotifier {
 
   Future<bool> sendMessageAndGetAnswers(
       {required String msg, required String chosenModelId}) async {
-    setState(ViewState.Busy);
-
     try {
+      setState(ViewState.Busy);
       log("modelId $chosenModelId");
       var response = await http.post(
         Uri.parse("$BASE_URL/chat/completions"),
@@ -101,14 +99,15 @@ class UserRepository extends BaseNotifier {
       );
       Map jsonResponse = jsonDecode(response.body);
       log("$jsonResponse");
-      if (jsonResponse['error'] != null) {
-        setState(ViewState.Idle);
-        print(jsonResponse['error']["message"]);
-        return false;
-      }
+      // if (jsonResponse['error'] != null) {
+      //   setState(ViewState.Idle);
+      //   print(jsonResponse['error']["message"]);
+      //   return false;
+      // }
       content = jsonResponse["choices"][0]["message"]["content"];
-      addChat(msg, content);
+
       setState(ViewState.Idle);
+      // addChat(msg, content);
       notifyListeners();
       return true;
     } catch (error) {
@@ -224,8 +223,7 @@ class UserRepository extends BaseNotifier {
       var responsebody =
           await API().post(apiRoute.signUp, header, jsonEncode(val));
       // fetchQrcodeDataModel = fetchQrcodeDataModelFromJson(responsebody);
-      loginResponse = loginResponseFromJson(responsebody);
-      prefs.setString("token", loginResponse.token!);
+
       setState(ViewState.Idle);
       return true;
     } catch (e) {

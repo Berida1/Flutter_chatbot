@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_chatbot/ui/constant/textstyle.dart';
 import 'package:flutter_chatbot/ui/responsiveState/responsive_state.dart';
+import 'package:flutter_chatbot/ui/responsiveState/view_state.dart';
 import 'package:flutter_chatbot/widget/customer_appbar.dart';
 import 'package:provider/provider.dart';
 
@@ -69,9 +70,17 @@ class _ResponseScreenState extends State<ResponseScreen> {
             ResponsiveState(
                 state: userProv.state,
                 busyWidget: Center(
-                    child: Text(
-                  "Loading the best solution. be patient",
-                  style: txStyle14.copyWith(color: Colors.grey),
+                    child: Column(
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "Loading the best solution. be patient",
+                      style: txStyle14.copyWith(color: Colors.grey),
+                    ),
+                  ],
                 )),
                 idleWidget: Text(
                   userProv.content,
