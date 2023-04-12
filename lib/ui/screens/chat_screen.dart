@@ -129,7 +129,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         Get.to(ResponseScreen(
                           question: textEditingController.text,
                         ));
-                        userProv.fetchChat();
+                        // userProv.fetchChat();
                       },
                       child: Container(
                         height: 40,
@@ -177,21 +177,24 @@ class _ChatScreenState extends State<ChatScreen> {
                         shrinkWrap: true,
                         itemCount: userProv.chatHistoryModel.data?.length,
                         itemBuilder: (context, index) {
-                          return ListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title: SizedBox(
-                              width: double.infinity,
-                              child: Text(
-                                "${userProv.chatHistoryModel.data?.elementAt(index).question}",
-                                overflow: TextOverflow.ellipsis,
-                                style: txStyle14,
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              title: SizedBox(
+                                width: double.infinity,
+                                child: Text(
+                                  "${userProv.chatHistoryModel.data?.elementAt(index).question}",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: txStyle14,
+                                ),
                               ),
-                            ),
-                            subtitle: SizedBox(
-                              width: double.infinity,
-                              child: Text(
-                                "${userProv.chatHistoryModel.data?.elementAt(index).answer}",
-                                style: txStyle12.copyWith(color: Colors.grey),
+                              subtitle: SizedBox(
+                                width: double.infinity,
+                                child: Text(
+                                  "${userProv.chatHistoryModel.data?.elementAt(index).answer}",
+                                  style: txStyle12.copyWith(color: Colors.grey),
+                                ),
                               ),
                             ),
                           );
