@@ -5,8 +5,10 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_chatbot/core/api/api_services.dart';
 import 'package:flutter_chatbot/core/repositories/user_repository.dart';
+import 'package:flutter_chatbot/ui/constant/colors.dart';
 import 'package:flutter_chatbot/ui/constant/textstyle.dart';
 import 'package:flutter_chatbot/ui/responsiveState/responsive_state.dart';
+import 'package:flutter_chatbot/ui/screens/recent_chat.dart';
 import 'package:flutter_chatbot/ui/screens/response_screen.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -51,7 +53,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
           idleWidget: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 18),
             child: RefreshIndicator(
               onRefresh: () async {
                 final userProv =
@@ -60,6 +62,9 @@ class _ChatScreenState extends State<ChatScreen> {
               },
               child: ListView(
                 children: [
+                  SizedBox(
+                    height: 20,
+                  ),
                   Row(
                     children: [
                       Container(
@@ -84,34 +89,62 @@ class _ChatScreenState extends State<ChatScreen> {
                             style: txStyle12.copyWith(color: Colors.grey),
                           )
                         ],
-                      )
+                      ),
+                      Spacer(),
+                      IconButton(
+                          onPressed: () {
+                            Get.to(RecentScreen());
+                          },
+                          icon: Icon(Icons.history))
                     ],
                   ),
                   SizedBox(
                     height: 20,
                   ),
-
+                  Text(
+                    "Type in mathematical problems to get a solution",
+                    style: txStyle14.copyWith(color: Colors.grey),
+                  ),
                   SizedBox(
-                    height: 200,
+                    height: 5,
+                  ),
+                  SizedBox(
+                    height: 100,
                     child: Container(
                       decoration: BoxDecoration(
-                          color: Color(0xFF444654),
+                          color: appPrimaryColor1,
                           borderRadius: BorderRadius.circular(5)),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 10, horizontal: 10),
-                        child: TextField(
-                          maxLines: 20,
+                        child: TextFormField(
+                          // maxLines: 20,
                           focusNode: focusNode,
                           style: const TextStyle(color: Colors.white),
                           controller: textEditingController,
-                          // onSubmitted: (value) async {
-                          //   await sendMessageFCT(
-                          //       modelsProvider: userProv, chatProvider: userProv);
-                          // },
+                          onEditingComplete: () async {
+                            final userProv = Provider.of<UserRepository>(
+                                context,
+                                listen: false);
+                            Get.to(ResponseScreen(
+                              question: textEditingController.text,
+                            ));
+
+                            bool u = await userProv.sendMessageAndGetAnswers(
+                                msg: textEditingController.text,
+                                chosenModelId: userProv.getCurrentModel);
+
+                            // if (u) {
+                            //   userProv.fetchChat();
+                            // }
+
+                            setState(() {
+                              textEditingController.clear();
+                            });
+                          },
                           decoration: const InputDecoration.collapsed(
-                              hintText: "How can I help you",
-                              hintStyle: TextStyle(color: Colors.grey)),
+                              hintText: "How can I help you?",
+                              hintStyle: TextStyle(color: Colors.white)),
                         ),
                       ),
                     ),
@@ -119,87 +152,94 @@ class _ChatScreenState extends State<ChatScreen> {
                   SizedBox(
                     height: 20,
                   ),
-                  Center(
-                    child: InkWell(
-                      onTap: () {
-                        userProv.sendMessageAndGetAnswers(
-                            msg: textEditingController.text,
-                            chosenModelId: userProv.getCurrentModel);
-
-                        Get.to(ResponseScreen(
-                          question: textEditingController.text,
-                        ));
-                        // userProv.fetchChat();
-                      },
-                      child: Container(
-                        height: 40,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          color: Color(0xFF444654),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Center(
-                            child: Text(
-                          "Submit",
-                          style: txStyle14wt,
-                        )),
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(
-                    height: 40,
-                  ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "History",
+                        "Recent",
                         style: txStyle16Bold,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Get.to(RecentScreen());
+                        },
+                        child: Text(
+                          "view all >>",
+                          style: txStyle12,
+                        ),
                       ),
                     ],
                   ),
                   SizedBox(
                     height: 10,
                   ),
-                  // userProv.chatHistoryModel.data!.isEmpty
-                  //     ? Center(
-                  //         child: Text(
-                  //           "You are yet to ask a question!",
-                  //           style: txStyle12.copyWith(color: Colors.grey),
-                  //         ),
-                  //       )
-                  //     :
-                  MediaQuery.removePadding(
-                    context: context,
-                    removeTop: true,
-                    removeBottom: true,
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: userProv.chatHistoryModel.data?.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              title: SizedBox(
-                                width: double.infinity,
-                                child: Text(
-                                  "${userProv.chatHistoryModel.data?.elementAt(index).question}",
-                                  overflow: TextOverflow.ellipsis,
-                                  style: txStyle14,
-                                ),
-                              ),
-                              subtitle: SizedBox(
-                                width: double.infinity,
-                                child: Text(
-                                  "${userProv.chatHistoryModel.data?.elementAt(index).answer}",
-                                  style: txStyle12.copyWith(color: Colors.grey),
-                                ),
-                              ),
-                            ),
-                          );
-                        }),
-                  )
+                  userProv.chatHistoryModel.data!.isEmpty
+                      ? Center(
+                          child: Text(
+                            "You are yet to ask a question!",
+                            style: txStyle12.copyWith(color: Colors.grey),
+                          ),
+                        )
+                      : MediaQuery.removePadding(
+                          context: context,
+                          removeTop: true,
+                          removeBottom: true,
+                          child: ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount:
+                                  (userProv.chatHistoryModel.data!.length < 5)
+                                      ? userProv.chatHistoryModel.data?.length
+                                      : 5,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 5),
+                                  child: Dismissible(
+                                    key: Key(index.toString()),
+                                    background: Container(color: Colors.red),
+                                    direction: DismissDirection.endToStart,
+                                    child: Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                          color:
+                                              appPrimaryColor1.withOpacity(.5),
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 10),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "${userProv.chatHistoryModel.data?.reversed.elementAt(index).question}",
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              style: txStyle14Boldwt,
+                                            ),
+                                            // SizedBox(
+                                            //   height: 10,
+                                            // ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              "${userProv.chatHistoryModel.data?.reversed.elementAt(index).answer}",
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                              style: txStyle12wt,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                        ),
                 ],
               ),
             ),

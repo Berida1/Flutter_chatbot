@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_chatbot/ui/constant/colors.dart';
 import 'package:flutter_chatbot/ui/constant/textstyle.dart';
 import 'package:flutter_chatbot/ui/responsiveState/responsive_state.dart';
+import 'package:flutter_chatbot/ui/responsiveState/view_state.dart';
+import 'package:flutter_chatbot/widget/custom_button_load.dart';
 import 'package:flutter_chatbot/widget/customer_appbar.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/repositories/user_repository.dart';
@@ -36,7 +40,7 @@ class _ResponseScreenState extends State<ResponseScreen> {
               children: [
                 Text(
                   "Question",
-                  style: txStyle14,
+                  style: txStyle14Bold,
                 ),
                 Icon(
                   Icons.edit,
@@ -52,6 +56,7 @@ class _ResponseScreenState extends State<ResponseScreen> {
               textAlign: TextAlign.left,
               style: txStyle12.copyWith(color: Colors.grey),
             ),
+            Divider(),
             SizedBox(
               height: 20,
             ),
@@ -59,7 +64,7 @@ class _ResponseScreenState extends State<ResponseScreen> {
               children: [
                 Text(
                   "Response",
-                  style: txStyle14,
+                  style: txStyle14Bold,
                 ),
               ],
             ),
@@ -69,13 +74,50 @@ class _ResponseScreenState extends State<ResponseScreen> {
             ResponsiveState(
                 state: userProv.state,
                 busyWidget: Center(
-                    child: Text(
-                  "Loading the best solution. be patient",
-                  style: txStyle14.copyWith(color: Colors.grey),
+                    child: Column(
+                  children: [
+                    SizedBox(
+                      height: 40,
+                    ),
+                    SpinKitCubeGrid(
+                      color: appPrimaryColor,
+                      size: 50.0,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "Loading the best solution. Please be patient",
+                      style: txStyle14.copyWith(color: Colors.grey),
+                    ),
+                  ],
                 )),
-                idleWidget: Text(
-                  userProv.content,
-                  style: txStyle12,
+                idleWidget: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      userProv.content,
+                      style: txStyle12,
+                    ),
+                    Divider(),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      height: 40,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: appPrimaryColor,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Not satisfied? Regenerate response",
+                          style: txStyle13wt,
+                        ),
+                      ),
+                    )
+                  ],
                 ))
           ],
         ),

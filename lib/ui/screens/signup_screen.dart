@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_chatbot/ui/screens/chat_screen.dart';
+import 'package:flutter_chatbot/ui/screens/login_screen.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
@@ -93,10 +94,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         _phone.text,
                         _passwordcontroller.text);
                     if (u) {
-                      userProv.userProfile();
-                      userProv.fetchChat();
-
-                      Get.to(ChatScreen());
+                      Get.to(LoginScreen());
                     }
                   },
                   label: "Sign up",
