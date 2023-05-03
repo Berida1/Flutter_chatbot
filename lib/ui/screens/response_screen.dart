@@ -8,7 +8,9 @@ import 'package:flutter_chatbot/ui/responsiveState/view_state.dart';
 import 'package:flutter_chatbot/widget/custom_button_load.dart';
 import 'package:flutter_chatbot/widget/customer_appbar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 import 'package:provider/provider.dart';
+import 'package:text_to_speech/text_to_speech.dart';
 
 import '../../core/repositories/user_repository.dart';
 
@@ -21,6 +23,22 @@ class ResponseScreen extends StatefulWidget {
 }
 
 class _ResponseScreenState extends State<ResponseScreen> {
+  final TextEditingController textEditingController = TextEditingController();
+  late FocusNode focusNode;
+  bool isEditable = true;
+  bool isSpeaking = false;
+  TextToSpeech tts = TextToSpeech();
+  @override
+  void initState() {
+    super.initState();
+    final userProv = Provider.of<UserRepository>(context, listen: false);
+
+    textEditingController.text = widget.question;
+    focusNode = FocusNode();
+  }
+
+  // FlutterTts flutterTts = FlutterTts();
+
   @override
   Widget build(BuildContext context) {
     final userProv = Provider.of<UserRepository>(context);
@@ -42,21 +60,59 @@ class _ResponseScreenState extends State<ResponseScreen> {
                   "Question",
                   style: txStyle14Bold,
                 ),
-                Icon(
-                  Icons.edit,
-                  size: 15,
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      isEditable = !isEditable;
+                      if (!isEditable) {
+                        focusNode.requestFocus();
+                      }
+                    });
+                  },
+                  child: Icon(
+                    Icons.edit,
+                    size: 15,
+                  ),
                 )
               ],
             ),
             SizedBox(
               height: 10,
             ),
-            Text(
-              widget.question,
-              textAlign: TextAlign.left,
-              style: txStyle12.copyWith(color: Colors.grey),
+            TextFormField(
+              // maxLines: 20,
+              readOnly: isEditable,
+              focusNode: focusNode,
+              style: const TextStyle(color: Colors.black),
+              controller: textEditingController,
+              onEditingComplete: () async {
+                final userProv =
+                    Provider.of<UserRepository>(context, listen: false);
+
+                bool u = await userProv.sendMessageAndGetAnswers(
+                    msg: textEditingController.text,
+                    chosenModelId: userProv.getCurrentModel);
+
+                // if (u) {
+                //   userProv.fetchChat();
+                // }
+              },
+              decoration: const InputDecoration.collapsed(
+                  hintText: "How can I help you?",
+                  hintStyle: TextStyle(color: Colors.white)),
             ),
+            // Text(
+            //   widget.question,
+            //   textAlign: TextAlign.left,
+            //   style: txStyle12.copyWith(color: Colors.grey),
+            // ),
             Divider(),
+            !isEditable
+                ? Text(
+                    "Press enter to send",
+                    style: txStyle12.copyWith(color: Colors.grey),
+                  )
+                : SizedBox.shrink(),
             SizedBox(
               height: 20,
             ),
@@ -100,20 +156,58 @@ class _ResponseScreenState extends State<ResponseScreen> {
                       style: txStyle12,
                     ),
                     Divider(),
+                    Row(
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              if (isSpeaking == false) {
+                                tts.speak(userProv.content);
+                                setState(() {
+                                  isSpeaking = true;
+                                });
+                              } else {
+                                tts.pause();
+                                setState(() {
+                                  isSpeaking = false;
+                                });
+                              }
+                            },
+                            icon: Icon(
+                              Icons.volume_up,
+                              color: appPrimaryColor,
+                            )),
+                        isSpeaking
+                            ? Text(
+                                "Tap to pause",
+                                style: txStyle14,
+                              )
+                            : Text(
+                                "Tap to Text to speech",
+                                style: txStyle14,
+                              )
+                      ],
+                    ),
                     SizedBox(
                       height: 20,
                     ),
-                    Container(
-                      height: 40,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: appPrimaryColor,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Center(
-                        child: Text(
-                          "Not satisfied? Regenerate response",
-                          style: txStyle13wt,
+                    InkWell(
+                      onTap: () {
+                        userProv.sendMessageAndGetAnswers(
+                            msg: textEditingController.text,
+                            chosenModelId: userProv.getCurrentModel);
+                      },
+                      child: Container(
+                        height: 40,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: appPrimaryColor,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Not satisfied? Regenerate response",
+                            style: txStyle13wt,
+                          ),
                         ),
                       ),
                     )
@@ -124,4 +218,14 @@ class _ResponseScreenState extends State<ResponseScreen> {
       ),
     );
   }
+
+//   Future _speak() async{
+//     var result = await flutterTts.speak("Hello World");
+//     // if (result == 1) setState(() => ttsState = TtsState.playing);
+// }
+
+// Future _stop() async{
+//     var result = await flutterTts.stop();
+//     // if (result == 1) setState(() => ttsState = TtsState.stopped);
+// }
 }

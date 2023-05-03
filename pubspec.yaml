@@ -36,6 +36,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_spinkit: ^5.1.0
+  text_to_speech: ^0.2.3
   get: ^4.6.5
   google_fonts: ^4.0.3
   http: ^0.13.5
