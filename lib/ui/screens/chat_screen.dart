@@ -10,6 +10,7 @@ import 'package:flutter_chatbot/ui/constant/textstyle.dart';
 import 'package:flutter_chatbot/ui/responsiveState/responsive_state.dart';
 import 'package:flutter_chatbot/ui/screens/recent_chat.dart';
 import 'package:flutter_chatbot/ui/screens/response_screen.dart';
+import 'package:flutter_chatbot/widget/user_image_widget.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -67,12 +68,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                   Row(
                     children: [
-                      Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.grey)),
+                      CustomNetworkImage(
+                        imageUrl:
+                            "https://cdn.hswstatic.com/gif/play/0b7f4e9b-f59c-4024-9f06-b3dc12850ab7-1920-1080.jpg",
+                        radius: 50,
                       ),
                       SizedBox(
                         width: 5,
@@ -185,7 +184,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           removeTop: true,
                           removeBottom: true,
                           child: ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
+                              physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemCount:
                                   (userProv.chatHistoryModel.data!.length < 5)
