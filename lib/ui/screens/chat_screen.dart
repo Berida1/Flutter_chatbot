@@ -70,7 +70,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     children: [
                       CustomNetworkImage(
                         imageUrl:
-                            "https://cdn.hswstatic.com/gif/play/0b7f4e9b-f59c-4024-9f06-b3dc12850ab7-1920-1080.jpg",
+                            "https://www.google.com/url?sa=i&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3AProfile_avatar_placeholder_large.png&psig=AOvVaw3lFdiF0NVUAfUiwi4Q72a6&ust=1685445385764000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCKj3wsCzmv8CFQAAAAAdAAAAABAD",
                         radius: 50,
                       ),
                       SizedBox(
@@ -172,7 +172,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   SizedBox(
                     height: 10,
                   ),
-                  userProv.chatHistoryModel.data!.isEmpty
+                  userProv.chatHistoryModel.data?.isEmpty ?? true
                       ? Center(
                           child: Text(
                             "You are yet to ask a question!",
