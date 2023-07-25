@@ -34,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
             children: [
               Spacer(),
               Text(
-                "MathBot",
+                "SMat-Bot",
                 style: txStyle25Boldwt,
               ),
               Spacer(),

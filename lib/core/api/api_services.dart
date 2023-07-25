@@ -37,7 +37,7 @@ class ApiServices {
     }
   }
 
-  // Send Message using Openai API
+  // Send Message using ChatGPT API
   static Future<String> sendMessageGPT(
       {required String message, required String modelId}) async {
       log("in sending message");

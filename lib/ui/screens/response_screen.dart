@@ -151,9 +151,18 @@ class _ResponseScreenState extends State<ResponseScreen> {
                 idleWidget: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      userProv.content,
-                      style: txStyle12,
+                    SizedBox(height: 10,),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Image.asset("assets/images/bot_image.png", height: 40, width: 50,),
+                        Expanded(
+                          child: Text(
+                            userProv.content,
+                            style: txStyle12,
+                          ),
+                        ),
+                      ],
                     ),
                     Divider(),
                     Row(

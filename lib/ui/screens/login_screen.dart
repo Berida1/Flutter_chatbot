@@ -29,72 +29,92 @@ class _LoginScreenState extends State<LoginScreen> {
     final userProv = Provider.of<UserRepository>(context);
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ListView(
-              shrinkWrap: true,
-              children: [
-                Text(
-                  "Welcome Back!",
-                  style: txStyle27Bold.copyWith(color: appPrimaryColor),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                CustomTextField(
-                  labelText: "Email",
-                  hintText: "johnDoe@gmail.com",
-                  controller: _emailController,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                CustomTextField(
-                  labelText: "Password",
-                  hintText: "**********",
-                  controller: _passwordcontroller,
-                  obscureText: true,
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            CustomButtonLoad(
-                onTap: () async {
-                  bool u = await userProv.login(
-                      _emailController.text, _passwordcontroller.text);
-                  if (u) {
-                    userProv.userProfile();
-                    userProv.fetchChat();
-
-                    Get.to(ChatScreen());
-                  }
-                },
-                label: "Login",
-                userProv: userProv.state),
-            SizedBox(
-              height: 10,
-            ),
-            InkWell(
-                onTap: () {
-                  Get.to(SignupScreen());
-                },
-                child: RichText(
-                  text: TextSpan(
-                    text: 'Are you new? ',
-                    style: txStyle14,
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: 'Signup',
-                          style: txStyle14Bold.copyWith(color: appPrimaryColor)),
-                    ],
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: Column(
+            
+            children: [
+              Text(
+                "SMat-Bot",
+                style: txStyle27.copyWith(color: appPrimaryColor, fontSize: 16),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                "A Secondary School",
+                style: txStyle27.copyWith(color: appPrimaryColor, fontSize: 16),
+              ),
+              Text(
+                "Mathematics Chatbot",
+                style: txStyle27.copyWith(color: appPrimaryColor, fontSize: 16),
+              ),
+              
+              ListView(
+                shrinkWrap: true,
+                
+                children: [
+                  Text(
+                    "Welcome Back!",
+                    style: txStyle27Bold.copyWith(color: appPrimaryColor),
                   ),
-                )),
-          ],
+                  SizedBox(
+                    height: 20,
+                  ),
+                  CustomTextField(
+                    labelText: "Email",
+                    hintText: "johnDoe@gmail.com",
+                    controller: _emailController,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  CustomTextField(
+                    labelText: "Password",
+                    hintText: "**********",
+                    controller: _passwordcontroller,
+                    obscureText: true,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              CustomButtonLoad(
+                  onTap: () async {
+                    bool u = await userProv.login(
+                        _emailController.text, _passwordcontroller.text);
+                    if (u) {
+                      userProv.userProfile();
+                      userProv.fetchChat();
+      
+                      Get.to(ChatScreen());
+                    }
+                  },
+                  label: "Login",
+                  userProv: userProv.state),
+              SizedBox(
+                height: 10,
+              ),
+              InkWell(
+                  onTap: () {
+                    Get.to(SignupScreen());
+                  },
+                  child: RichText(
+                    text: TextSpan(
+                      text: 'Are you new? ',
+                      style: txStyle14,
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: 'Signup',
+                            style:
+                                txStyle14Bold.copyWith(color: appPrimaryColor)),
+                      ],
+                    ),
+                  )),
+            ],
+          ),
         ),
       ),
     );

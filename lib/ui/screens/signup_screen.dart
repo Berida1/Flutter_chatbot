@@ -30,76 +30,80 @@ class _SignupScreenState extends State<SignupScreen> {
     final userProv = Provider.of<UserRepository>(context);
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: SafeArea(
-          child: ListView(
-            shrinkWrap: true,
-            children: [
-              Text(
-                "Create an account!",
-                style: txStyle27Bold,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              CustomTextField(
-                labelText: "First name",
-                hintText: "john",
-                controller: _firstName,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              CustomTextField(
-                labelText: "Last name",
-                hintText: "Doe",
-                controller: _lastName,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              CustomTextField(
-                labelText: "Phone number",
-                hintText: "090********",
-                controller: _phone,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              CustomTextField(
-                labelText: "Email",
-                hintText: "johnDoe@gmail.com",
-                controller: _emailController,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              CustomTextField(
-                labelText: "Password",
-                hintText: "**********",
-                controller: _passwordcontroller,
-                obscureText: true,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              CustomButtonLoad(
-                  onTap: () async {
-                    bool u = await userProv.signUp(
-                        _firstName.text,
-                        _lastName.text,
-                        "",
-                        _emailController.text,
-                        _phone.text,
-                        _passwordcontroller.text);
-                    if (u) {
-                      Get.to(LoginScreen());
-                    }
-                  },
-                  label: "Sign up",
-                  userProv: userProv.state),
-            ],
+      body: SafeArea(
+        child: Padding(
+          
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          
+          child: SafeArea(
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                Text(
+                  "Create an account!",
+                  style: txStyle27Bold,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                CustomTextField(
+                  labelText: "First name",
+                  hintText: "john",
+                  controller: _firstName,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                CustomTextField(
+                  labelText: "Last name",
+                  hintText: "Doe",
+                  controller: _lastName,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                CustomTextField(
+                  labelText: "Phone number",
+                  hintText: "090********",
+                  controller: _phone,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                CustomTextField(
+                  labelText: "Email",
+                  hintText: "johnDoe@gmail.com",
+                  controller: _emailController,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                CustomTextField(
+                  labelText: "Password",
+                  hintText: "**********",
+                  controller: _passwordcontroller,
+                  obscureText: true,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                CustomButtonLoad(
+                    onTap: () async {
+                      bool u = await userProv.signUp(
+                          _firstName.text,
+                          _lastName.text,
+                          "",
+                          _emailController.text,
+                          _phone.text,
+                          _passwordcontroller.text);
+                      if (u) {
+                        Get.to(LoginScreen());
+                      }
+                    },
+                    label: "Sign up",
+                    userProv: userProv.state),
+              ],
+            ),
           ),
         ),
       ),
